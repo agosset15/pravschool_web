@@ -14,7 +14,16 @@ $all = array($clas, $admin, $ns, $teacher, $login, $password, $notifications, $b
 if (!empty($tgid)):
     $query = "UPDATE `STUDENTS` SET `clas`='$clas', `isAdmin`='$admin', `isNs`='$ns', `isTeacher`='$teacher', `login`='$login', `password`='$password', `duty_notification`='$notifications', `blocked`='$block' WHERE `id` = $tgid";
 
-    $mysql = new mysqli('localhost', 'ag15', 'ag151234', 'pravschool');
+    include './pass.php';
+    /** @var string $user*/
+    /** @var string $host*/
+    /** @var string $passw*/
+    /** @var string $db*/
+
+    $mysql = new mysqli($host,
+        $user,
+        $passw,
+        $db);
 
     $mysql->query($query);
 
