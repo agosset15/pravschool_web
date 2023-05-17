@@ -17,7 +17,16 @@
         <?php
         function get_all_admins(): array
         {
-            $mysql = new mysqli('localhost', 'ag15', 'ag151234', 'pravschool');
+            include './pass.php';
+            /** @var string $user*/
+            /** @var string $host*/
+            /** @var string $passw*/
+            /** @var string $db*/
+
+            $mysql = new mysqli($host,
+                $user,
+                $passw,
+                $db);
             $res = $mysql->query("SELECT * FROM `STUDENTS` WHERE `isAdmin` = 1");
             return $res->fetch_all(MYSQLI_ASSOC);
         }
@@ -53,6 +62,12 @@
                 <?php
                 function get_all_users(): array
                 {
+                    include './pass.php';
+                    /** @var string $user*/
+                    /** @var string $host*/
+                    /** @var string $passw*/
+                    /** @var string $db*/
+
                     $mysql = new mysqli('localhost', 'ag15', 'ag151234', 'pravschool');
                     $res = $mysql->query("SELECT * FROM `STUDENTS`");
                     return $res->fetch_all(MYSQLI_ASSOC);

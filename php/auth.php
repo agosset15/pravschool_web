@@ -1,5 +1,5 @@
 <?php
-include 'pass.php';
+include './pass.php';
 
 $login = filter_var(trim($_POST['login']), 513);
 $pass = filter_var(trim($_POST['password']), 513);
