@@ -164,10 +164,14 @@
 <body>
 <?php
 $page = $_GET['nextpage'];
-if ($page == 1){include('rasp.html');}
-elseif ($page == 2){include('kab.html');}
-elseif ($page == 3){include('hw.html');}
-elseif ($page == 4){include('profile.html');}
+if ($page == 1){
+    include('rasp.html');}
+elseif ($page == 2){
+    include('kab.html');}
+elseif ($page == 3){
+    include('hw.html');}
+elseif ($page == 4){
+    include('profile.html');}
 elseif ($page == 'admin'){
     include('login.php');
 }
