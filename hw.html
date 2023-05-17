@@ -1,0 +1,75 @@
+<header>
+  <div class="dropdown">
+    <button onclick="showRaspList()" class="dropbtn">Домашнее задание</button>
+    <div id="myDropdown3" class="dropdown-content">
+      <a href="?nextpage=1">Расписание по дням</a>
+      <a href="?nextpage=2">Расписание по кабинетам</a>
+      <a href="http://d.pravschool.ru/">Электронный журнал</a>
+    </div>
+  </div>
+  <a href="?nextpage=4"><img src='https://i.postimg.cc/pXyFWfTR/pngwing-com.png' width="50" height="50" alt="Профиль"/></a>
+</header>
+<form>
+  <label for="day-number-hw"></label><select id="day-number-hw">
+  <option value='1'>Понедельник</option>
+  <option value='2'>Вторник</option>
+  <option value='3'>Среда</option>
+  <option value='4'>Четверг</option>
+  <option value='5'>Пятница</option>
+</select>
+  <button id="show-hw-button" onclick="showHw(event)">Показать ДЗ</button>
+</form>
+<div id="homework">
+  <p id="hw1"></p>
+  <p id="hw2"></p>
+  <p id="hw3"></p>
+  <p id="hw4"></p>
+  <p id="hw5"></p>
+  <p id="hw6"></p>
+  <p id="hw7"></p>
+  <p id="hw8"></p>
+</div>
+<script type="text/javascript">
+  Telegram.WebApp.ready();
+
+  let initData = Telegram.WebApp.initData || '';
+  let initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+
+
+  const hwNumberInput = document.querySelector("#day-number-hw");
+  const hwContainer = document.querySelector("#homework");
+
+  function showHw(e) {
+    const dayNumber = hwNumberInput.value;
+    hwContainer.style.display = "block";
+    fetch(`https://tg.ag15.ru/test/demo/getDb/homework?day=${dayNumber}&_auth=${initData}`).then(response => response.json()).then(data => {
+      let rs = data.hw
+      let paragraphs = rs.split('#');
+      let less = [hw1, hw2, hw3, hw4, hw5, hw6, hw7, hw8]
+      for (let i = 1; i < paragraphs.length; i++) {
+        less[i-1].innerHTML = paragraphs[i];
+      }
+    });
+    e.preventDefault()
+    return false;
+  }
+
+  function webviewExpand() {
+    Telegram.WebApp.expand();
+  }
+
+  function webviewClose() {
+    Telegram.WebApp.close();
+  }
+
+  Telegram.WebApp.onEvent('themeChanged', function () {
+    $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2));
+  });
+
+  Telegram.WebApp.MainButton
+          .setText('Закрыть')
+          .show()
+          .onClick(function () {
+            webviewClose();
+          });
+</script>

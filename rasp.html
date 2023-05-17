@@ -1,0 +1,78 @@
+<header>
+    <div class="dropdown">
+        <button onclick="showRaspList()" class="dropbtn">Расписание по дням</button>
+        <div id="myDropdown1" class="dropdown-content">
+            <a href="?nextpage=2">Расписание по кабинетам</a>
+            <a href="?nextpage=3">Домашнее задание</a>
+            <a href="#" onclick="window.open('http://d.pravschool.ru');">Электронный журнал</a>
+        </div>
+    </div>
+    <a href="?nextpage=4"><img src='https://i.postimg.cc/pXyFWfTR/pngwing-com.png' width="50" height="50" alt="Профиль"/></a>
+</header>
+<form>
+    <label for="day-number"></label><select id="day-number">
+    <option value='1'>Понедельник</option>
+    <option value='2'>Вторник</option>
+    <option value='3'>Среда</option>
+    <option value='4'>Четверг</option>
+    <option value='5'>Пятница</option>
+</select>
+    <button id="show-schedule-button" onclick="showSchedule(event)">Показать расписание</button>
+</form>
+<div id="schedule">
+    <p id="l1"></p>
+    <p id="l2"></p>
+    <p id="l3"></p>
+    <p id="l4"></p>
+    <p id="l5"></p>
+    <p id="l6"></p>
+    <p id="l7"></p>
+    <p id="l8"></p>
+</div>
+<script type="text/javascript">
+    Telegram.WebApp.ready();
+
+    let initData = Telegram.WebApp.initData || '';
+    let initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+
+
+    const dayNumberInput = document.querySelector("#day-number");
+    const scheduleContainer = document.querySelector("#schedule");
+
+    function showSchedule(e) {
+        const dayNumber = dayNumberInput.value;
+        scheduleContainer.style.display = "block";
+        fetch(`https://tg.ag15.ru/test/demo/getDb/rasp?day=${dayNumber}&_auth=${initData}`)
+            .then(response => response.json())
+            .then(data => {
+                let rs = data.rasp
+                let paragraphs = rs.split(/\d+\./);
+                let less = ['l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8']
+                let le = document.getElementById('l1')
+                for (let i = 1; i < paragraphs.length; i++) {
+                    le.innerHTML = `${i}. ${paragraphs[i]}`;
+                    le = document.getElementById(less[i-1])
+                }
+            });
+        e.preventDefault()
+        return false;
+    }
+    function webviewExpand() {
+        Telegram.WebApp.expand();
+    }
+
+    function webviewClose() {
+        Telegram.WebApp.close();
+    }
+
+    Telegram.WebApp.onEvent('themeChanged', function () {
+        $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2));
+    });
+
+    Telegram.WebApp.MainButton
+        .setText('Закрыть')
+        .show()
+        .onClick(function () {
+            webviewClose();
+        });
+</script>

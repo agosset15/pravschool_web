@@ -1,0 +1,113 @@
+<header>
+    <div class="dropdown">
+        <button onclick="showRaspList()" class="dropbtn">Расписание по кабинетам</button>
+        <div id="myDropdown2" class="dropdown-content">
+            <a href="?nextpage=1">Расписание по дням</a>
+            <a href="?nextpage=3">Домашнее задание</a>
+            <a href="http://d.pravschool.ru/">Электронный журнал</a>
+        </div>
+    </div>
+    <a href="?nextpage=4"><img src='https://i.postimg.cc/pXyFWfTR/pngwing-com.png' width="50" height="50" alt="Профиль"/></a>
+</header>
+<img src='https://i.postimg.cc/BbZwy2mm/photo-2023-01-27-19-33-53.jpg' alt='ID кабинетов'/>
+<form>
+    <label for="kab-number"></label><input type="text" placeholder="Введите номер кабинета" id="kab-number">
+    <button id="show-kab-button" onclick="showKab(event)">Показать расписание</button>
+</form>
+<div id="kabschedule">
+    <p id="r1"></p>
+    <p id="r2"></p>
+    <p id="r3"></p>
+    <p id="r4"></p>
+    <p id="r5"></p>
+    <p id="r6"></p>
+    <p id="r7"></p>
+    <p id="r8"></p>
+    <p id="r9"></p>
+    <p id="r10"></p>
+    <p id="r11"></p>
+    <p id="r12"></p>
+    <p id="r13"></p>
+    <p id="r14"></p>
+    <p id="r15"></p>
+    <p id="r16"></p>
+    <p id="r17"></p>
+    <p id="r18"></p>
+    <p id="r19"></p>
+    <p id="r20"></p>
+    <p id="r21"></p>
+    <p id="r22"></p>
+    <p id="r23"></p>
+    <p id="r24"></p>
+    <p id="r25"></p>
+    <p id="r26"></p>
+    <p id="r27"></p>
+    <p id="r28"></p>
+    <p id="r29"></p>
+    <p id="r30"></p>
+    <p id="r31"></p>
+    <p id="r32"></p>
+    <p id="r33"></p>
+    <p id="r34"></p>
+    <p id="r35"></p>
+    <p id="r36"></p>
+    <p id="r37"></p>
+    <p id="r38"></p>
+    <p id="r39"></p>
+    <p id="r40"></p>
+    <p id="r41"></p>
+    <p id="r42"></p>
+    <p id="r43"></p>
+    <p id="r44"></p>
+    <p id="r45"></p>
+    <p id="r46"></p>
+    <p id="r47"></p>
+    <p id="r48"></p>
+    <p id="r49"></p>
+    <p id="r50"></p>
+</div>
+<script type="text/javascript">
+    Telegram.WebApp.ready();
+
+    let initData = Telegram.WebApp.initData || '';
+    let initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+
+    const kabNumberInput = document.querySelector("#kab-number");
+    const kabContainer = document.querySelector("#kabschedule");
+
+    function showKab(e) {
+        const kabNumber = kabNumberInput.value;
+        kabContainer.style.display = "block";
+        fetch(`https://tg.ag15.ru/test/demo/getDb/rasp/kab?kab=${kabNumber}&_auth=${initData}`)
+            .then(response => response.json())
+            .then(data => {
+                let rs = data.rasp
+                let paragraphs = rs.split('#');
+                let less = document.getElementById("r1")
+                for (let i = 1; i < paragraphs.length; i++) {
+                    less.innerHTML = paragraphs[i];
+                    less = document.getElementById(`r${i+1}`)
+                }
+            });
+        e.preventDefault()
+        return false;
+    }
+    function webviewExpand() {
+        Telegram.WebApp.expand();
+    }
+
+    function webviewClose() {
+        Telegram.WebApp.close();
+    }
+
+    Telegram.WebApp.onEvent('themeChanged', function () {
+        $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2));
+    });
+
+    Telegram.WebApp.MainButton
+        .setText('Закрыть')
+        .show()
+        .onClick(function () {
+            webviewClose();
+        });
+</script>
